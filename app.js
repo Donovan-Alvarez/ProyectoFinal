@@ -6,15 +6,16 @@ var bodyParser = require('body-parser');
 var app = express();
 
 //Rout
-var user_routes = require('./routes/admin');
+var admin_routes = require('./routes/admin');
+var client_routes = require('./routes/client');
 
 //BodyParser
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 //Rout use
-app.use('/user', user_routes);
-app.use('/category', user_routes);
+app.use('/admin', admin_routes);
+app.use('/client', client_routes);
 
 // cors
 app.use((req, res, next) => {
