@@ -1,6 +1,6 @@
 'use strict'
 var Product = require('../models/products');
-var jwt = require('../services/jwt');
+var jwt = require('../services/jwtp');
 
 //Save
 function SaveProduct(req,res){
@@ -25,7 +25,7 @@ function SaveProduct(req,res){
                                 if(!productStored){
                                     res.status(400).send({message: 'No se pude registrar'});
                                 }else{
-                                    res.status(200).send({product: productStored, message:'Producto Agotado'});
+                                    res.status(200).send({product: productStored});
             
                                 }
                             }
@@ -49,7 +49,7 @@ function DeleteProduct(req,res){
             res.status(200).send({product, message: 'Este producto fue eliminado'});
         }
     });
-} 
+}
 //Update
 function UpdateProduct(req,res){
     var id = req.params.id;

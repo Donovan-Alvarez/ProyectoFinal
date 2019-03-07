@@ -7,7 +7,7 @@ var secret = 'clave_secreta_del_proyecto';
 
 //NodeJs Cors
 exports.createToken = function(product){
-    var payloadP = {
+    var payload = {
         sub: product._id,
         title: product.title,
         description: product.description,
@@ -16,5 +16,5 @@ exports.createToken = function(product){
         iat: moment().unix(),
         exp: moment().add(30, 'days').unix()
     };
-    return jwt.encode(payloadP, secret);
+    return jwt.encode(payload, secret);
 }

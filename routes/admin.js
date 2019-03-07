@@ -19,7 +19,7 @@ api.delete('/delete-category/:id', CategoryController.DeleteCategory);
 api.put('/update-category/:id', CategoryController.UpdateCategory);
 api.get('/list-category', CategoryController.ListarCategory);
 api.get('/login-category', CategoryController.LoginCategory);
-api.post('/listCategoty/:title', CategoryController.ListCategory);
+api.post('/listcategoty/:title', CategoryController.ListCategory);
 //Product
 api.post('/save-product', productController.SaveProduct);
 api.delete('/delete-product/:id', productController.DeleteProduct);

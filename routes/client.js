@@ -14,6 +14,7 @@ api.delete('/delete-client/:id', ClienteController.DeleteClient);
 api.put('/update-client/:id', ClienteController.UpdateClient);
 api.get('/productocate/:title',md_auth.ensureAut, ClienteController.ProdCate);
 api.post('/login-client', ClienteController.LoginClient); 
+api.get('/listCliente', ClienteController.list);
 //Compra
 api.post('/save-compra',md_auth.ensureAut,PurchasesController.SavePurchases);
 api.post('/agregarCarrito',PurchasesController.saveCompra);
@@ -23,4 +24,5 @@ api.post('/addcarr/:id', ClienteController.AddCarr);
 api.post('/save-bill/:id',md_auth.ensureAut, BillController.SaveBill);
 api.get('/verFactura',md_auth.ensureAut,BillController.visualizar);
 api.get('/productforBill',md_auth.ensureAut,BillController.productfac);
+api.get('/reportebill', BillController.listbill);
 module.exports = api;

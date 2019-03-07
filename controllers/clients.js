@@ -141,6 +141,15 @@ function LoginClient(req,res){
     });
 }
 
+function list(req,res){
+    Client.find({}, (err,cl)=>{
+        if(err){
+            res.status(500).send({message: 'Error'});
+        }else{
+            res.status(200).send(cl);
+        }
+    });
+}
 module.exports = {
     SaveClient,
     buscarProduct,
@@ -148,5 +157,6 @@ module.exports = {
     UpdateClient,
     ProdCate,
     AddCarr,
-    LoginClient
+    LoginClient,
+    list
 }

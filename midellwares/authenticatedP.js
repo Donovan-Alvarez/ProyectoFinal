@@ -10,8 +10,8 @@ exports.ensureAut = function(req,res,next){
     }else{
         var token = req.headers.authorization.replace(/['"]+/g,'');
         try{
-            var payloadP = jwt.decode(token, secret);
-            if(payloadP.ex <= moment().unix()){
+            var payload = jwt.decode(token, secret);
+            if(payload.ex <= moment().unix()){
                 return res.status(404).send({message: 'El token ha expirado'});
             }
         }catch(exp){
@@ -19,6 +19,6 @@ exports.ensureAut = function(req,res,next){
         }
 
     }
-    req.product = payloadP;
+    req.product = payload;
     next();
 }

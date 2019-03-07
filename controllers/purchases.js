@@ -4,15 +4,14 @@ var Product = require('../models/products');
 
 function saveCompra(req,res){
     var purchase = new Purchases();
-    
-    purchase.save((err,guardar)=>{
+    purchase.save((err,pur)=>{
         if(err){
             res.status(500).send({message: 'No se puede guardar el carrito'});
         }else{
-            if(!guardar){
+            if(!pur){
                 res.status(404).send({message: 'Error al guardar el carrito'});
             }else{
-                res.status(200).send({carrito: guardar});
+                res.status(200).send({carrito: pur});
             }
         }
     });
@@ -22,23 +21,19 @@ function agregarProducto(req, res) {
     var id = req.params.id;
     var idProduct = req.params.idProduct;
     var params = req.body;
-    //var restarCantidad = cant - c;
     var cliente = req.params.idCliente;
     var producto = req.product.sub;
     var precio = req.product.price; 
     var cant = params.cantidad;
     var stock = req.product.stock;
 
-    console.log(cant);
-    console.log(stock);
-
-    /*\if (req.product.stock > 0) {
-        //if (cant <= c) {
+    if (req.product.stock > 0) {
+        if (cant <= stock) {
         Product.findByIdAndUpdate(idProduct, { stock: stock - cant }, (err, act) => {
             if (err) {
                 res.status(500).send({ message: 'No se puede actualizar el stock' });
             } else {
-                Purchases.findByIdAndUpdate(id, { $push: { compra: { product: producto, price: precio, stock: stock - cant, client: cliente, cantidad: cant } } }, { new: true }, (err, updat) => {
+                Purchases.findByIdAndUpdate(id, { $push: { compra: { product: producto, price: precio, stock: stock-stock, client: cliente, cantidad: cant } } }, { new: true }, (err, updat) => {
                     if (err) {
                         res.status(500).send({ message: 'No se puede registrar la respuesta a la encuesta' });
                     } else {
@@ -47,12 +42,12 @@ function agregarProducto(req, res) {
                 });
             }
         });
-        //}else {
-        // res.status(200).send({message: 'No puede comprar mas productos de los existentes'});            
-        //}
+        }else {
+         res.status(200).send({message: 'No puede comprar mas productos'});
+        }
     } else {
         res.status(200).send({ message: 'El producto seleccionado está agotado' })
-    }*/
+    }
 }
 
 function SavePurchases(req,res){
@@ -76,9 +71,8 @@ function SavePurchases(req,res){
                                 if(!purchasesStored){
                                     res.status(400).send({message: 'No se pude registrar'});
                                 }else{
-                                    //if(stock -=5){
                                         res.status(200).send({purchases: purchasesStored});
-                                    //}
+                                 
                                 }
                             }
                         });

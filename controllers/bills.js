@@ -59,8 +59,21 @@ function productfac(req,res){
     });
 }
 
+function listbill(req,res){
+    Bills.find({}, (err,bill)=>{
+        if(err){
+            res.status(500).send({message:'Error'});
+        }else{
+            res.status(200).send(bill);
+
+        }
+    })
+}
+
+
 module.exports = {
     SaveBill,
     visualizar,
-    productfac
+    productfac,
+    listbill
 }
