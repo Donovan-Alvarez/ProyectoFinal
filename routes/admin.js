@@ -19,10 +19,12 @@ api.delete('/delete-category/:id', CategoryController.DeleteCategory);
 api.put('/update-category/:id', CategoryController.UpdateCategory);
 api.get('/list-category', CategoryController.ListarCategory);
 api.get('/login-category', CategoryController.LoginCategory);
+api.post('/listCategoty/:title', CategoryController.ListCategory);
 //Product
-api.post('/save-product', md_auth.ensureAut, productController.SaveProduct);
+api.post('/save-product', productController.SaveProduct);
 api.delete('/delete-product/:id', productController.DeleteProduct);
 api.put('/update-product/:id', productController.UpdateProduct);
 api.get('/list-product', productController.ListProduct);
-api.post('/controlStock/:id', productController.ControlStock)
+api.post('/tokenStock', productController.Token);
+api.post('/ControlStock/:id', md_auth.ensureAut, productController.ControlStock);
 module.exports = api;

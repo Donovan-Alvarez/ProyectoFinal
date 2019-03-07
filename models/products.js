@@ -7,7 +7,8 @@ var ProductSchema = Schema({
      title: String,
      description: String,
      stock: Number,
-     category: {type: Schema.ObjectId, ref: 'Category'}
+     price: Number,
+     category: String
 })
 
 module.exports = mongoose.model('Products', ProductSchema);

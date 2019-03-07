@@ -1,6 +1,7 @@
 'use strict'
 var Client = require('../models/clients');
 var Product = require('../models/products');
+var Category = require('../models/categories');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('../services/jwt');
 var multiparty = require('connect-multiparty');
@@ -81,10 +82,71 @@ function UpdateClient(req,res){
         }
     });
 }
+//Ver Producto por su categoria
+function ProdCate (req,res){
+    var title = req.params.title;
+    Product.find({category: title},(err,categoria)=>{
+        if(err){
+            res.status(500).send({message: 'Error al listar los alumnos'});
+        }else{
+            res.status(200).send(categoria);
+        }
+    })
+}
+//Carrito
+function AddCarr(req,res){
+    var product = new Product();
+    var params = req.params.id;
+
+
+    product.save(params,(err,carr)=>{
+        if(err){
+            res.status(500).send({message: 'No se pudo guardar'});
+        }else{
+            if(!carr){
+                res.status(404).send({message: 'No se encuentra'});
+            }else{
+                res.status(200).send({carr});
+            }
+        }
+    });
+}
+//Login
+function LoginClient(req,res){
+    var params = req.body;
+    var email = params.email;
+    var password = params.password;
+    Client.findOne({email: email},(err,cliente)=>{
+        if(err){
+            res.status(500).send({message:'Error al intentar iniciar sesión'});
+        }else{
+            if(cliente){
+                bcrypt.compare(password, cliente.password, (err,check)=>{
+                    if(check){
+                    if(params.gettoken){
+                        res.status(200).send({
+                            token: jwt.createToken(cliente)
+                        });
+                    }else{
+                        res.status(200).send(cliente);
+                    }
+                }else{
+                    res.status(404).send({message:'El cliente no ha podido logearse'});
+                }
+                });
+            }else{
+                res.status(404).send({message:'No se ha podido encontrar el cliente'});
+            }
+        }
+    });
+}
 
 module.exports = {
     SaveClient,
     buscarProduct,
     DeleteClient,
-    UpdateClient
+    UpdateClient,
+    ProdCate,
+    AddCarr,
+    LoginClient
 }

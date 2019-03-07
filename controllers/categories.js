@@ -1,5 +1,6 @@
 'use strict'
 var Category = require('../models/categories');
+var Product = require('../models/products');
 var bcrypt = require('bcrypt-nodejs');
 
 var jwt = require('../services/jwt');
@@ -41,12 +42,35 @@ function SaveCategory(req,res){
 //Delete
 function DeleteCategory(req,res){
     var id = req.params.id;
-    Category.findByIdAndDelete({_id:id},(err,Category)=>{
+    var params = req.body;
+    Category.findById(id, (err, CaDelete)=>{
         if(err){
-            res.status(500).send({message:'Error al eliminar'});
+            return res.status(500).send({message:'Error de petición'});
         }else{
-            res.status(200).send({Category, message:'Esta Categoria ha sido eliminado'});
+            if(!CaDelete){
+                return res.status(404).send({message: 'No se puedo completar la petición'});
+            }
         }
+        Product.updateMany({category: CaDelete.title},{category: 'default'},{new: true}, (err,Save)=>{
+            if(err){
+                return res.status(500).send({message: 'Error'});
+            }else{
+                if(!Save){
+                   return res.status(404).send({message: 'No se pudo encontrar'});
+                }
+            }
+        });
+        Category.deleteOne({title:CaDelete.title},(err,deletes)=>{
+            if(err){
+                res.status(500).send({message: 'Error al eliminar'});
+            }else{
+                if(!deletes){
+                    return  res.status(404).send({message: 'No se pudo encontrar la categoria'});
+                }else{
+                    return res.status(200).send({deletes,message: 'Categoria eliminada'});
+                }
+            }
+        });
     });
 }
 //Update
@@ -75,6 +99,17 @@ function ListarCategory(req,res){
         }
     });
 }
+//List Category
+function ListCategory(req,res){
+    var params = req.params.title;
+    Category.findOne({title: params}, (err,categoria)=>{
+        if(err){
+            res.status(500).send({message: 'Error al listar'});
+        }else{
+                res.status(200).send(categoria);
+        }
+    })
+}
 //login
 function LoginCategory(req,res){
     var params = req.body;
@@ -102,5 +137,6 @@ module.exports = {
     DeleteCategory,
     UpdateCategory,
     ListarCategory,
+    ListCategory,
     LoginCategory
 }
